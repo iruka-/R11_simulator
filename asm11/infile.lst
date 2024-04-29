@@ -1,0 +1,58 @@
+0000:                                            org  0 
+                                       //
+                                       //	RAMは後半 1k WORD の 先頭から 4 WORD存在すると仮定している.
+                                       //
+0000:                                 work0:     equ  0x400 
+0000:                                 work1:     equ  0x401 
+0000:                                 work2:     equ  0x402 
+0000:                                 work3:     equ  0x403 
+                                       
+0000:0020                                        mov  a,32 
+0001:0fff                                        mov  b,0x7ff 
+0002:1001                                        mov  c,1 
+0003:3403                                        mov  [work3],a 
+0004:3c01                                        mov  [work1],c 
+0005:1c00                                        mov  a,[work0] 
+0006:2401                                        mov  b,[work1] 
+0007:2c02                                        mov  c,[work2] 
+                                       
+0008:                                 label1:          
+0008:4000                                        add  a,b 
+0009:487b                                        add  c,123 
+000a:5000                                        sub  a,b 
+000b:580e                                        jmp  label2 
+000c:6401                                        jmp  [work1] 
+000d:6808                                        jnc  label1 
+                                       
+000e:                                 label2:          
+                                       //	subのオペランド省略を許す.
+000e:5000                                        sub   
+                                       
+                                       //	疑似的なCall
+000f:1011 5812                                   call subr1 
+                                       
+                                       //	HALTが無いので、自己ジャンプで代用する.
+0011:                                 label3:          
+0011:5811                                        jmp  label3 
+                                       
+0012:                                 subr1:           
+0012:3c03                                        mov  [work3],c 
+0013:0041                                        mov  a,0x41 
+0014:4000                                        add  a,b 
+0015:6403                                        ret   
+                                       
+                                       //	out a
+0016:                                            end   
+                                       
+                                       
+
+
+SYMBOL LIST:
+label1           = 8	(0x8)
+label2           = 14	(0xe)
+label3           = 17	(0x11)
+subr1            = 18	(0x12)
+work0            = 1024	(0x400)
+work1            = 1025	(0x401)
+work2            = 1026	(0x402)
+work3            = 1027	(0x403)
