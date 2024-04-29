@@ -14,7 +14,7 @@
   内訳は上位 5bit(instruction_set.h) + 下位11bit(オペランド)です。
 
 
-# 11bit計算機用とは、なんだったのか？
+# ところで、この 11bit計算機って、何ですか？
 
 参考ページ：
   https://github.com/iruka-/ATMEL_AVR/blob/master/md/2014-08.md
