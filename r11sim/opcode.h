@@ -7,47 +7,51 @@
 
 #include "../asm11/instruction_set.h"
 
+#ifndef Extern
+#define Extern extern
+#endif
+
 typedef	unsigned short WORD;
 
-struct _OPCODE ;		// ‚¿‚å‚±‚Á‚ÆéŒ¾.
+struct _OPCODE ;		// ã¡ã‚‡ã“ã£ã¨å®£è¨€.
 
-//	–½—ßÀsŠÖ”‚Ìƒvƒƒgƒ^ƒCƒvŒ^.
+//	å‘½ä»¤å®Ÿè¡Œé–¢æ•°ã®ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—å‹.
 typedef int (*EMUFUNC) (int code,struct _OPCODE *tab);
-//	–½—ß‹tƒAƒZƒ“ƒuƒ‹ŠÖ”‚Ìƒvƒƒgƒ^ƒCƒvŒ^.
+//	å‘½ä»¤é€†ã‚¢ã‚»ãƒ³ãƒ–ãƒ«é–¢æ•°ã®ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—å‹.
 typedef int (*DISFUNC) (int code,struct _OPCODE *tab);
 
 
 typedef	struct _OPCODE {
-	char *mnemonic;			// ƒjƒ‚
-	char *operand;			// ƒIƒyƒ‰ƒ“ƒh
-	int	  pattern;			// ‹@ŠBŒê
-	EMUFUNC emufunc;		// –½—ßÀsŠÖ”
-	DISFUNC disfunc;		// –½—ß‹tƒAƒZƒ“ƒuƒ‹ŠÖ”
+	char *mnemonic;			// ãƒ‹ãƒ¢
+	char *operand;			// ã‚ªãƒšãƒ©ãƒ³ãƒ‰
+	int	  pattern;			// æ©Ÿæ¢°èª
+	EMUFUNC emufunc;		// å‘½ä»¤å®Ÿè¡Œé–¢æ•°
+	DISFUNC disfunc;		// å‘½ä»¤é€†ã‚¢ã‚»ãƒ³ãƒ–ãƒ«é–¢æ•°
 } OPCODE;
 
 
-#define	MEMSIZE		0x800			// À‘•ƒƒ‚ƒŠ[ƒTƒCƒY (WORD)
+#define	MEMSIZE		0x800			// å®Ÿè£…ãƒ¡ãƒ¢ãƒªãƒ¼ã‚µã‚¤ã‚º (WORD)
 #define	WORD_MASK	0x7ff			// 11bit
 
 #define	SIGN_MASK	0x400			// sign bit(unuse)
 #define	CARRY_MASK	0x800			// carry bit (use)
 
-OPCODE  code_table[32];		// –½—ß•\(5bit)
+Extern OPCODE  code_table[32];		// å‘½ä»¤è¡¨(5bit)
 
 /** *********************************************************************************
- *	ƒƒ‚ƒŠ[ƒRƒ“ƒeƒLƒXƒg
+ *	ãƒ¡ãƒ¢ãƒªãƒ¼ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆ
  ************************************************************************************
  */
-WORD    memory[MEMSIZE];
+Extern WORD    memory[MEMSIZE];
 
 /** *********************************************************************************
- *	‚u‚q‚`‚lƒRƒ“ƒeƒLƒXƒg
+ *	ï¼¶ï¼²ï¼¡ï¼­ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆ
  ************************************************************************************
  */
 //WORD    vram[VRAMSIZE];
 
 /** *********************************************************************************
- *	ƒŒƒWƒXƒ^ƒRƒ“ƒeƒLƒXƒg
+ *	ãƒ¬ã‚¸ã‚¹ã‚¿ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆ
  ************************************************************************************
  */
 typedef	struct tag_R16_CONTEXT {
@@ -59,16 +63,16 @@ typedef	struct tag_R16_CONTEXT {
 	char	z;	// zero
 	char	c;	// carry
 	char	m;	// minus
-	WORD	pc_bak;	// jump‚·‚é‘O‚ÌPC.	(‹tƒAƒZƒ“ƒuƒ‹‚É•K—v)
+	WORD	pc_bak;	// jumpã™ã‚‹å‰ã®PC.	(é€†ã‚¢ã‚»ãƒ³ãƒ–ãƒ«æ™‚ã«å¿…è¦)
 } R16_CONTEXT;
 
-R16_CONTEXT	reg;
+Extern R16_CONTEXT	reg;
 
 
 #define	EMUFUNC_(x_)	int x_(int code,struct _OPCODE *tab)
 #define	DISFUNC_(x_)	int x_(int code,struct _OPCODE *tab)
 
-//	–½—ßÀsŠÖ”‚Ìƒvƒƒgƒ^ƒCƒvéŒ¾.
+//	å‘½ä»¤å®Ÿè¡Œé–¢æ•°ã®ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—å®£è¨€.
 EMUFUNC_( f_MOV_A_imm );
 EMUFUNC_( f_MOV_B_imm );
 EMUFUNC_( f_MOV_C_imm );
@@ -101,13 +105,13 @@ DISFUNC_( d_JMP_ind );
 DISFUNC_( d_JNC_imm );
 DISFUNC_( d_OUT_A );
 
-//	–½—ß‹tƒAƒZƒ“ƒuƒ‹ŠÖ”‚Ìƒvƒƒgƒ^ƒCƒvéŒ¾.
+//	å‘½ä»¤é€†ã‚¢ã‚»ãƒ³ãƒ–ãƒ«é–¢æ•°ã®ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—å®£è¨€.
 
-EMUFUNC_( f_und );	//–¢’è‹`.
+EMUFUNC_( f_und );	//æœªå®šç¾©.
 DISFUNC_( d_und );
 
 //
-//	“üo—ÍŠÖ”.
+//	å…¥å‡ºåŠ›é–¢æ•°.
 //
 void LED_output(int acc , int ea);
 

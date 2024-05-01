@@ -10,36 +10,36 @@
 0000:0020                                        mov  a,32 
 0001:0fff                                        mov  b,0x7ff 
 0002:1001                                        mov  c,1 
-0003:3403                                        mov  [work3],a 
-0004:3c01                                        mov  [work1],c 
-0005:1c00                                        mov  a,[work0] 
-0006:2401                                        mov  b,[work1] 
-0007:2c02                                        mov  c,[work2] 
+0003:4403                                        mov  [work3],a 
+0004:4c01                                        mov  [work1],c 
+0005:2400                                        mov  a,[work0] 
+0006:2c01                                        mov  b,[work1] 
+0007:3402                                        mov  c,[work2] 
                                        
 0008:                                 label1:          
-0008:4000                                        add  a,b 
-0009:487b                                        add  c,123 
-000a:5000                                        sub  a,b 
-000b:580e                                        jmp  label2 
-000c:6401                                        jmp  [work1] 
-000d:6808                                        jnc  label1 
+0008:5800                                        add  a,b 
+0009:607b                                        add  c,123 
+000a:6800                                        sub  a,b 
+000b:180e                                        jmp  label2 
+000c:3c01                                        jmp  [work1] 
+000d:5008                                        jnc  label1 
                                        
 000e:                                 label2:          
                                        //	subのオペランド省略を許す.
-000e:5000                                        sub   
+000e:6800                                        sub   
                                        
                                        //	疑似的なCall
-000f:1011 5812                                   call subr1 
+000f:1011 1812                                   call subr1 
                                        
                                        //	HALTが無いので、自己ジャンプで代用する.
 0011:                                 label3:          
-0011:5811                                        jmp  label3 
+0011:1811                                        jmp  label3 
                                        
 0012:                                 subr1:           
-0012:3c03                                        mov  [work3],c 
+0012:4c03                                        mov  [work3],c 
 0013:0041                                        mov  a,0x41 
-0014:4000                                        add  a,b 
-0015:6403                                        ret   
+0014:5800                                        add  a,b 
+0015:3c03                                        ret   
                                        
                                        //	out a
 0016:                                            end   
